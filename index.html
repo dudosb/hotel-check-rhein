@@ -493,7 +493,8 @@
         </svg>
       </button>
     </div>
-    <div class="footer-note">Powered by AI · Your privacy is respected</div>
+    <div class="footer-note"><button onclick="resetChat()" style="background:none;border:1px solid rgba(201,169,110,0.3);color:#C9A96E;padding:6px 16px;border-radius:20px;font-size:11px;cursor:pointer;margin-bottom:8px;font-family:'DM Sans',sans-serif;">↩ Back to start</button>
+<div class="footer-note">Powered by AI · Your privacy is respected</div>
   </footer>
 
 </div>
@@ -719,7 +720,22 @@ function showTyping() {
   msgs.scrollTop = msgs.scrollHeight;
 }
 
-function hideTyping() {
+function resetChat() {
+  document.getElementById('messages').innerHTML = `
+    <div class="welcome">
+      <div class="welcome-icon">🏨</div>
+      <h2>Welcome to Hotel Check Rhein</h2>
+      <p id="welcome-sub">Ask me anything about your stay — WiFi, parking, check-out, or anything else.</p>
+      <div class="quick-actions">
+        <button class="quick-btn" onclick="quickAsk('wifi')"><span class="icon">📶</span><span>WiFi</span><span class="label">Password & setup</span></button>
+        <button class="quick-btn" onclick="quickAsk('parking')"><span class="icon">🅿️</span><span>Parking</span><span class="label">Location & access</span></button>
+        <button class="quick-btn" onclick="quickAsk('checkin')"><span class="icon">🔑</span><span>Room entry</span><span class="label">PIN & smart lock</span></button>
+        <button class="quick-btn" onclick="quickAsk('checkout')"><span class="icon">🕐</span><span>Check-out</span><span class="label">Time & procedure</span></button>
+      </div>
+    </div>`;
+  conversationHistory = [];
+  sessionId = 'session_' + Math.random().toString(36).substr(2, 9) + '_' + Date.now();
+}function hideTyping() {
   if (typingEl) { typingEl.remove(); typingEl = null; }
 }
 </script>
