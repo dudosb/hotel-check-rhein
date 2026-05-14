@@ -1,743 +1,577 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="de">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Hotel Check Rhein</title>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<meta name="description" content="Hotel Check Rhein — Ihr digitaler Gästeservice">
+<meta name="theme-color" content="#0e0f12">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
 <style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-  :root {
-    --gold: #C9A96E;
-    --gold-light: #E8D5B0;
-    --gold-dark: #9A7A4A;
-    --dark: #0F0E0C;
-    --dark-2: #1A1816;
-    --dark-3: #252320;
-    --dark-4: #2F2D2A;
-    --text: #E8E4DC;
-    --text-muted: #8A8680;
-    --user-bubble: #2A2620;
-    --bot-bubble: #1E1C19;
-    --border: rgba(201,169,110,0.15);
-  }
-
-  html, body {
-    height: 100%;
-    background: var(--dark);
-    color: var(--text);
-    font-family: 'DM Sans', sans-serif;
-    font-weight: 300;
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  html, body { height: 100%; }
+  body {
+    background: #0e0f12;
+    color: #e8e6e0;
+    font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     overflow: hidden;
-  }
-
-  /* ── BACKGROUND TEXTURE ── */
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background:
-      radial-gradient(ellipse 80% 60% at 50% -10%, rgba(201,169,110,0.08) 0%, transparent 60%),
-      radial-gradient(ellipse 40% 40% at 90% 90%, rgba(201,169,110,0.04) 0%, transparent 50%);
-    pointer-events: none;
-    z-index: 0;
-  }
-
-  /* ── LAYOUT ── */
-  #app {
-    position: relative;
-    z-index: 1;
     display: flex;
     flex-direction: column;
-    height: 100dvh;
-    max-width: 480px;
-    margin: 0 auto;
   }
 
-  /* ── HEADER ── */
-  header {
-    padding: 20px 24px 16px;
-    border-bottom: 1px solid var(--border);
-    background: rgba(15,14,12,0.9);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    flex-shrink: 0;
-  }
-
-  .hotel-name {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 11px;
-    font-weight: 400;
-    letter-spacing: 0.25em;
-    text-transform: uppercase;
-    color: var(--gold);
-    margin-bottom: 4px;
-  }
-
-  .header-title {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 22px;
-    font-weight: 300;
-    color: var(--text);
-    letter-spacing: 0.02em;
-  }
-
-  .header-title em {
-    font-style: italic;
-    color: var(--gold-light);
-  }
-
-  .status-row {
+  /* HEADER */
+  .header {
+    background: linear-gradient(180deg, #1a1c20 0%, #14161a 100%);
+    border-bottom: 1px solid rgba(201, 169, 110, 0.2);
+    padding: 14px 20px 12px;
     display: flex;
     align-items: center;
-    gap: 6px;
-    margin-top: 6px;
-  }
-
-  .status-dot {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: #4CAF7D;
-    animation: pulse-dot 2s ease-in-out infinite;
-  }
-
-  @keyframes pulse-dot {
-    0%, 100% { opacity: 1; transform: scale(1); }
-    50% { opacity: 0.6; transform: scale(0.8); }
-  }
-
-  .status-text {
-    font-size: 11px;
-    color: var(--text-muted);
-    letter-spacing: 0.05em;
-  }
-
-  /* ── LANGUAGE SELECTOR ── */
-  .lang-bar {
-    display: flex;
-    gap: 6px;
-    padding: 10px 24px;
-    border-bottom: 1px solid var(--border);
-    background: rgba(15,14,12,0.7);
-    overflow-x: auto;
+    justify-content: space-between;
     flex-shrink: 0;
-    scrollbar-width: none;
   }
-  .lang-bar::-webkit-scrollbar { display: none; }
-
-  .lang-btn {
-    flex-shrink: 0;
-    padding: 4px 12px;
-    border-radius: 20px;
-    border: 1px solid var(--border);
-    background: transparent;
-    color: var(--text-muted);
-    font-family: 'DM Sans', sans-serif;
+  .brand { display: flex; flex-direction: column; }
+  .brand .hotel-name {
+    font-family: 'Playfair Display', serif;
+    color: #C9A96E;
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: 0.3px;
+  }
+  .brand .tagline {
+    color: #888;
     font-size: 11px;
-    font-weight: 400;
-    letter-spacing: 0.05em;
+    margin-top: 3px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+  .lang-select {
+    background: rgba(201, 169, 110, 0.08);
+    border: 1px solid rgba(201, 169, 110, 0.25);
+    color: #e8e6e0;
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-size: 12px;
     cursor: pointer;
-    transition: all 0.2s;
+    font-family: inherit;
+    outline: none;
   }
+  .lang-select:focus { border-color: #C9A96E; }
 
-  .lang-btn:hover { border-color: var(--gold); color: var(--gold-light); }
-  .lang-btn.active {
-    background: rgba(201,169,110,0.12);
-    border-color: var(--gold);
-    color: var(--gold);
+  /* EMERGENCY BANNER */
+  .emergency {
+    background: rgba(201, 169, 110, 0.06);
+    border-bottom: 1px solid rgba(201, 169, 110, 0.15);
+    padding: 8px 20px;
+    font-size: 12px;
+    color: #C9A96E;
+    text-align: center;
+    flex-shrink: 0;
+    transition: all 0.3s ease;
   }
+  .emergency.urgent {
+    background: rgba(220, 38, 38, 0.12);
+    border-bottom-color: rgba(220, 38, 38, 0.4);
+    color: #fca5a5;
+    animation: pulse 1.5s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.7; }
+  }
+  .emergency a { color: inherit; text-decoration: none; font-weight: 600; }
+  .emergency a:hover { text-decoration: underline; }
 
-  /* ── MESSAGES ── */
-  #messages {
+  /* MESSAGES */
+  .messages {
     flex: 1;
     overflow-y: auto;
-    padding: 24px 16px;
+    padding: 20px;
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: 12px;
     scroll-behavior: smooth;
   }
 
-  #messages::-webkit-scrollbar { width: 2px; }
-  #messages::-webkit-scrollbar-track { background: transparent; }
-  #messages::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
-
-  /* ── WELCOME ── */
+  /* WELCOME SCREEN */
   .welcome {
+    margin: auto 0;
     text-align: center;
-    padding: 32px 16px 16px;
+    padding: 20px 0;
   }
-
   .welcome-icon {
-    width: 56px;
-    height: 56px;
-    margin: 0 auto 16px;
-    border-radius: 50%;
-    border: 1px solid var(--border);
-    background: var(--dark-3);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 24px;
+    font-size: 48px;
+    margin-bottom: 16px;
+    opacity: 0.9;
   }
-
   .welcome h2 {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 20px;
-    font-weight: 300;
-    color: var(--gold-light);
-    margin-bottom: 8px;
+    font-family: 'Playfair Display', serif;
+    color: #C9A96E;
+    font-size: 22px;
+    margin-bottom: 10px;
+    font-weight: 600;
   }
-
   .welcome p {
-    font-size: 13px;
-    color: var(--text-muted);
-    line-height: 1.6;
-    max-width: 280px;
-    margin: 0 auto 20px;
+    color: #aaa;
+    font-size: 14px;
+    line-height: 1.5;
+    margin: 0 auto 24px;
+    max-width: 320px;
   }
-
-  /* ── QUICK ACTIONS ── */
   .quick-actions {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 8px;
-    margin-top: 4px;
-  }
-
-  .quick-btn {
-    padding: 12px 10px;
-    border-radius: 10px;
-    border: 1px solid var(--border);
-    background: var(--dark-3);
-    color: var(--text);
-    font-family: 'DM Sans', sans-serif;
-    font-size: 12px;
-    font-weight: 400;
-    text-align: left;
-    cursor: pointer;
-    transition: all 0.2s;
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-  }
-
-  .quick-btn:hover {
-    border-color: var(--gold);
-    background: rgba(201,169,110,0.06);
-  }
-
-  .quick-btn .icon { font-size: 18px; }
-  .quick-btn .label { color: var(--text-muted); font-size: 11px; }
-
-  /* ── MESSAGE BUBBLES ── */
-  .msg {
-    display: flex;
-    flex-direction: column;
-    max-width: 85%;
-    animation: msg-in 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) both;
-  }
-
-  @keyframes msg-in {
-    from { opacity: 0; transform: translateY(8px) scale(0.97); }
-    to { opacity: 1; transform: translateY(0) scale(1); }
-  }
-
-  .msg.user { align-self: flex-end; align-items: flex-end; }
-  .msg.bot { align-self: flex-start; align-items: flex-start; }
-
-  .bubble {
-    padding: 12px 16px;
-    border-radius: 16px;
-    font-size: 14px;
-    line-height: 1.6;
-    word-break: break-word;
-  }
-
-  .msg.user .bubble {
-    background: rgba(201,169,110,0.15);
-    border: 1px solid rgba(201,169,110,0.25);
-    border-bottom-right-radius: 4px;
-    color: var(--text);
-  }
-
-  .msg.bot .bubble {
-    background: var(--dark-3);
-    border: 1px solid var(--border);
-    border-bottom-left-radius: 4px;
-    color: var(--text);
-  }
-
-  .msg-time {
-    font-size: 10px;
-    color: var(--text-muted);
-    margin-top: 4px;
-    padding: 0 4px;
-  }
-
-  /* ── TYPING INDICATOR ── */
-  .typing-bubble {
-    background: var(--dark-3);
-    border: 1px solid var(--border);
-    border-bottom-left-radius: 4px;
-    padding: 14px 18px;
-    border-radius: 16px;
-    display: flex;
-    align-items: center;
-    gap: 4px;
-  }
-
-  .typing-dot {
-    width: 5px;
-    height: 5px;
-    border-radius: 50%;
-    background: var(--gold);
-    animation: typing 1.2s ease-in-out infinite;
-  }
-  .typing-dot:nth-child(2) { animation-delay: 0.2s; }
-  .typing-dot:nth-child(3) { animation-delay: 0.4s; }
-
-  @keyframes typing {
-    0%, 100% { opacity: 0.3; transform: translateY(0); }
-    50% { opacity: 1; transform: translateY(-3px); }
-  }
-
-  /* ── DIVIDER ── */
-  .divider {
-    text-align: center;
-    font-size: 10px;
-    color: var(--text-muted);
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    position: relative;
-    flex-shrink: 0;
-  }
-  .divider::before, .divider::after {
-    content: '';
-    position: absolute;
-    top: 50%;
-    width: 30%;
-    height: 1px;
-    background: var(--border);
-  }
-  .divider::before { left: 0; }
-  .divider::after { right: 0; }
-
-  /* ── INPUT AREA ── */
-  footer {
-    padding: 12px 16px 20px;
-    border-top: 1px solid var(--border);
-    background: rgba(15,14,12,0.95);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    flex-shrink: 0;
-  }
-
-  .input-row {
-    display: flex;
-    align-items: flex-end;
     gap: 10px;
-    background: var(--dark-3);
-    border: 1px solid var(--border);
+    max-width: 360px;
+    margin: 0 auto;
+  }
+  .quick-btn {
+    background: rgba(201, 169, 110, 0.06);
+    border: 1px solid rgba(201, 169, 110, 0.2);
+    color: #e8e6e0;
+    padding: 14px 8px;
+    border-radius: 10px;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.2s ease;
+    font-family: inherit;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+  }
+  .quick-btn:hover, .quick-btn:active {
+    background: rgba(201, 169, 110, 0.14);
+    border-color: rgba(201, 169, 110, 0.5);
+    transform: translateY(-1px);
+  }
+  .quick-btn .icon { font-size: 22px; }
+  .quick-btn .title {
+    color: #C9A96E;
+    font-size: 13px;
+    font-weight: 600;
+  }
+  .quick-btn .label {
+    color: #888;
+    font-size: 10.5px;
+  }
+
+  /* CHAT MESSAGES */
+  .msg {
+    padding: 11px 15px;
+    border-radius: 14px;
+    max-width: 85%;
+    line-height: 1.5;
+    font-size: 14.5px;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    animation: slideIn 0.25s ease;
+  }
+  @keyframes slideIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .msg.user {
+    background: #C9A96E;
+    color: #1a1c20;
+    align-self: flex-end;
+    border-bottom-right-radius: 4px;
+    font-weight: 500;
+  }
+  .msg.bot {
+    background: #1f2126;
+    border: 1px solid rgba(255, 255, 255, 0.04);
+    align-self: flex-start;
+    border-bottom-left-radius: 4px;
+  }
+  .typing {
+    color: #888;
+    font-style: italic;
+    opacity: 0.7;
+  }
+  .typing::after {
+    content: '';
+    display: inline-block;
+    width: 4px;
+    height: 4px;
+    background: #888;
+    border-radius: 50%;
+    margin-left: 4px;
+    animation: typing 1.4s infinite;
+  }
+  @keyframes typing {
+    0%, 60%, 100% { opacity: 0.3; }
+    30% { opacity: 1; }
+  }
+
+  /* BACK BUTTON */
+  .back-row {
+    display: flex;
+    justify-content: center;
+    padding: 4px 0 0;
+  }
+  .back-btn {
+    background: none;
+    border: 1px solid rgba(201, 169, 110, 0.3);
+    color: #C9A96E;
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 11.5px;
+    cursor: pointer;
+    font-family: inherit;
+    transition: all 0.2s ease;
+  }
+  .back-btn:hover {
+    background: rgba(201, 169, 110, 0.08);
+    border-color: rgba(201, 169, 110, 0.5);
+  }
+
+  /* INPUT AREA */
+  .input-area {
+    background: #14161a;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+    padding: 12px 16px calc(12px + env(safe-area-inset-bottom));
+    display: flex;
+    gap: 8px;
+    flex-shrink: 0;
+  }
+  .input-area input {
+    flex: 1;
+    background: #1f2126;
+    border: 1px solid rgba(201, 169, 110, 0.2);
+    color: #e8e6e0;
+    padding: 12px 16px;
     border-radius: 24px;
-    padding: 8px 8px 8px 16px;
+    font-size: 14.5px;
+    font-family: inherit;
+    outline: none;
     transition: border-color 0.2s;
   }
-
-  .input-row:focus-within {
-    border-color: rgba(201,169,110,0.4);
-  }
-
-  #input {
-    flex: 1;
-    background: none;
+  .input-area input::placeholder { color: #666; }
+  .input-area input:focus { border-color: #C9A96E; }
+  .input-area button {
+    background: #C9A96E;
+    color: #1a1c20;
     border: none;
-    outline: none;
-    color: var(--text);
-    font-family: 'DM Sans', sans-serif;
-    font-size: 14px;
-    font-weight: 300;
-    resize: none;
-    max-height: 100px;
-    line-height: 1.5;
-    padding: 4px 0;
-  }
-
-  #input::placeholder { color: var(--text-muted); }
-
-  #send-btn {
-    width: 36px;
-    height: 36px;
+    width: 46px;
+    height: 46px;
     border-radius: 50%;
-    border: none;
-    background: var(--gold);
-    color: var(--dark);
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: all 0.2s;
+    transition: all 0.2s ease;
     flex-shrink: 0;
   }
+  .input-area button:hover:not(:disabled) { transform: scale(1.05); }
+  .input-area button:disabled { opacity: 0.4; cursor: not-allowed; }
+  .input-area button svg { width: 20px; height: 20px; }
 
-  #send-btn:hover { background: var(--gold-light); transform: scale(1.05); }
-  #send-btn:active { transform: scale(0.95); }
-  #send-btn:disabled { background: var(--dark-4); color: var(--text-muted); cursor: not-allowed; transform: none; }
-
-  #send-btn svg { width: 16px; height: 16px; }
-
+  /* FOOTER */
   .footer-note {
     text-align: center;
-    font-size: 10px;
-    color: var(--text-muted);
-    margin-top: 8px;
-    letter-spacing: 0.03em;
-  }
-
-  /* ── EMERGENCY BANNER ── */
-  .emergency-banner {
-    background: rgba(201,169,110,0.08);
-    border: 1px solid rgba(201,169,110,0.3);
-    border-radius: 10px;
-    padding: 12px 16px;
-    margin: 4px 0;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-
-  .emergency-banner .em-icon { font-size: 20px; flex-shrink: 0; }
-
-  .emergency-banner .em-text { font-size: 12px; color: var(--text-muted); line-height: 1.5; }
-
-  .emergency-banner .em-number {
-    display: block;
-    font-size: 16px;
-    font-weight: 500;
-    color: var(--gold);
-    letter-spacing: 0.05em;
-    margin-top: 2px;
-  }
-
-  /* ── ERROR ── */
-  .error-msg {
-    font-size: 12px;
-    color: #E57373;
-    text-align: center;
-    padding: 8px;
+    color: #555;
+    font-size: 10.5px;
+    padding: 8px 16px 4px;
+    background: #14161a;
+    flex-shrink: 0;
+    letter-spacing: 0.3px;
   }
 </style>
 </head>
 <body>
-<div id="app">
-
-  <header>
-    <div class="hotel-name">Hotel Check Rhein</div>
-    <div class="header-title">How can we <em>help you?</em></div>
-    <div class="status-row">
-      <div class="status-dot"></div>
-      <span class="status-text">Available 24/7</span>
+  <div class="header">
+    <div class="brand">
+      <span class="hotel-name">Hotel Check Rhein</span>
+      <span class="tagline" id="tagline">Digitaler Concierge</span>
     </div>
-  </header>
-
-  <div class="lang-bar">
-    <button class="lang-btn active" onclick="setLang('auto')">🌐 Auto</button>
-    <button class="lang-btn" onclick="setLang('en')">EN</button>
-    <button class="lang-btn" onclick="setLang('de')">DE</button>
-    <button class="lang-btn" onclick="setLang('nl')">NL</button>
-    <button class="lang-btn" onclick="setLang('fr')">FR</button>
-    <button class="lang-btn" onclick="setLang('es')">ES</button>
-    <button class="lang-btn" onclick="setLang('uk')">UA</button>
-    <button class="lang-btn" onclick="setLang('hr')">HR</button>
+    <select class="lang-select" id="language" onchange="changeLanguage()" aria-label="Language">
+      <option value="de">🇩🇪 DE</option>
+      <option value="en">🇬🇧 EN</option>
+      <option value="fr">🇫🇷 FR</option>
+      <option value="nl">🇳🇱 NL</option>
+      <option value="es">🇪🇸 ES</option>
+      <option value="hr">🇭🇷 HR</option>
+      <option value="uk">🇺🇦 UK</option>
+    </select>
   </div>
 
-  <div id="messages">
-    <div class="welcome">
-      <div class="welcome-icon">🏨</div>
-      <h2>Welcome to Hotel Check Rhein</h2>
-      <p id="welcome-sub">Ask me anything about your stay — WiFi, parking, check-out, or anything else.</p>
-      <div class="quick-actions">
-        <button class="quick-btn" onclick="quickAsk('wifi')">
-          <span class="icon">📶</span>
-          <span>WiFi</span>
-          <span class="label">Password & setup</span>
-        </button>
-        <button class="quick-btn" onclick="quickAsk('parking')">
-          <span class="icon">🅿️</span>
-          <span>Parking</span>
-          <span class="label">Location & access</span>
-        </button>
-        <button class="quick-btn" onclick="quickAsk('checkin')">
-          <span class="icon">🔑</span>
-          <span>Room entry</span>
-          <span class="label">PIN & smart lock</span>
-        </button>
-        <button class="quick-btn" onclick="quickAsk('checkout')">
-          <span class="icon">🕐</span>
-          <span>Check-out</span>
-          <span class="label">Time & procedure</span>
-        </button>
-      </div>
-    </div>
+  <div class="emergency" id="emergency">
+    <span id="emergency-text"></span>
+    <a href="tel:+4983317851790">+49 8331 7851790</a>
   </div>
 
-  <footer>
-    <div class="input-row">
-      <textarea id="input" rows="1" placeholder="Type your question..." maxlength="500"></textarea>
-      <button id="send-btn" onclick="sendMessage()" disabled>
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-          <line x1="22" y1="2" x2="11" y2="13"></line>
-          <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
-        </svg>
-      </button>
-    </div>
-    <div class="footer-note"><button onclick="resetChat()" style="background:none;border:1px solid rgba(201,169,110,0.3);color:#C9A96E;padding:6px 16px;border-radius:20px;font-size:11px;cursor:pointer;margin-bottom:8px;font-family:'DM Sans',sans-serif;">↩ Back to start</button>
-<div class="footer-note">Powered by AI · Your privacy is respected</div>
-  </footer>
+  <div class="messages" id="messages"></div>
 
-</div>
+  <div class="input-area">
+    <input id="input" type="text" autocomplete="off" onkeypress="if(event.key==='Enter')send()">
+    <button onclick="send()" id="sendBtn" aria-label="Send">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="22" y1="2" x2="11" y2="13"/>
+        <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+      </svg>
+    </button>
+  </div>
+
+  <div class="footer-note">Powered by AI · Hotel Check Rhein © 2026</div>
 
 <script>
-// ── CONFIGURATION ──
-// IMPORTANT: Replace this with your actual n8n webhook URL
-const N8N_WEBHOOK_URL = 'https://welmora.app.n8n.cloud/webhook/hotel-chat';
+  const WEBHOOK = 'https://welmora.app.n8n.cloud/webhook/hotel-chat-v2';
 
-// Hotel emergency contact (manager)
-const MANAGER_PHONE = '+49 8331 7851790';
-const MANAGER_LABEL = 'Manager';
+  // ============ I18N DICTIONARY ============
+  const I18N = {
+    de: {
+      tagline: 'Digitaler Concierge',
+      welcomeTitle: 'Willkommen im Hotel Check Rhein',
+      welcomeText: 'Wie kann ich Ihnen helfen? Stellen Sie mir eine Frage zu Ihrem Aufenthalt — WLAN, Parken, Check-out oder etwas anderes.',
+      emergencyText: 'Notfall? Manager anrufen: ',
+      placeholder: 'Nachricht schreiben...',
+      thinking: 'Schreibt',
+      backBtn: '↩ Zurück zum Start',
+      networkError: 'Leider gab es einen Fehler. Bitte versuchen Sie es erneut oder rufen Sie den Manager an.',
+      actions: [
+        { icon: '📶', title: 'WLAN', label: 'Passwort & Setup', msg: 'Wie ist das WLAN-Passwort?' },
+        { icon: '🅿️', title: 'Parken', label: 'Standort & Zugang', msg: 'Wo kann ich parken?' },
+        { icon: '🔑', title: 'Zimmer', label: 'PIN & Zugang', msg: 'Wie komme ich in mein Zimmer?' },
+        { icon: '🕐', title: 'Check-out', label: 'Zeit & Ablauf', msg: 'Bis wann ist der Check-out?' }
+      ]
+    },
+    en: {
+      tagline: 'Digital Concierge',
+      welcomeTitle: 'Welcome to Hotel Check Rhein',
+      welcomeText: 'How can I help you? Ask me anything about your stay — WiFi, parking, check-out, or anything else.',
+      emergencyText: 'Emergency? Call manager: ',
+      placeholder: 'Write a message...',
+      thinking: 'Typing',
+      backBtn: '↩ Back to start',
+      networkError: 'Sorry, there was a problem. Please try again or call the manager.',
+      actions: [
+        { icon: '📶', title: 'WiFi', label: 'Password & setup', msg: 'What is the WiFi password?' },
+        { icon: '🅿️', title: 'Parking', label: 'Location & access', msg: 'Where can I park?' },
+        { icon: '🔑', title: 'Room entry', label: 'PIN & access', msg: 'How do I get into my room?' },
+        { icon: '🕐', title: 'Check-out', label: 'Time & procedure', msg: 'What time is check-out?' }
+      ]
+    },
+    fr: {
+      tagline: 'Concierge Numérique',
+      welcomeTitle: 'Bienvenue à l\u2019Hôtel Check Rhein',
+      welcomeText: 'Comment puis-je vous aider ? Posez-moi une question sur votre séjour — WiFi, parking, départ ou autre.',
+      emergencyText: 'Urgence ? Appelez le manager : ',
+      placeholder: 'Écrivez un message...',
+      thinking: 'Écrit',
+      backBtn: '↩ Retour au début',
+      networkError: 'Désolé, une erreur s\u2019est produite. Veuillez réessayer ou appeler le manager.',
+      actions: [
+        { icon: '📶', title: 'WiFi', label: 'Mot de passe', msg: 'Quel est le mot de passe WiFi ?' },
+        { icon: '🅿️', title: 'Parking', label: 'Emplacement', msg: 'Où puis-je me garer ?' },
+        { icon: '🔑', title: 'Chambre', label: 'PIN & accès', msg: 'Comment entrer dans ma chambre ?' },
+        { icon: '🕐', title: 'Check-out', label: 'Heure & procédure', msg: 'À quelle heure est le check-out ?' }
+      ]
+    },
+    nl: {
+      tagline: 'Digitale Concierge',
+      welcomeTitle: 'Welkom in Hotel Check Rhein',
+      welcomeText: 'Hoe kan ik u helpen? Stel een vraag over uw verblijf — WiFi, parkeren, check-out of iets anders.',
+      emergencyText: 'Noodgeval? Bel de manager: ',
+      placeholder: 'Schrijf een bericht...',
+      thinking: 'Schrijft',
+      backBtn: '↩ Terug naar start',
+      networkError: 'Sorry, er ging iets mis. Probeer het opnieuw of bel de manager.',
+      actions: [
+        { icon: '📶', title: 'WiFi', label: 'Wachtwoord', msg: 'Wat is het WiFi-wachtwoord?' },
+        { icon: '🅿️', title: 'Parkeren', label: 'Locatie & toegang', msg: 'Waar kan ik parkeren?' },
+        { icon: '🔑', title: 'Kamer', label: 'PIN & toegang', msg: 'Hoe kom ik in mijn kamer?' },
+        { icon: '🕐', title: 'Check-out', label: 'Tijd & procedure', msg: 'Hoe laat is de check-out?' }
+      ]
+    },
+    es: {
+      tagline: 'Conserje Digital',
+      welcomeTitle: 'Bienvenido a Hotel Check Rhein',
+      welcomeText: '¿En qué puedo ayudarle? Hágame una pregunta sobre su estancia — WiFi, aparcamiento, salida o cualquier otra cosa.',
+      emergencyText: '¿Emergencia? Llame al manager: ',
+      placeholder: 'Escribe un mensaje...',
+      thinking: 'Escribiendo',
+      backBtn: '↩ Volver al inicio',
+      networkError: 'Lo sentimos, hubo un problema. Inténtelo de nuevo o llame al manager.',
+      actions: [
+        { icon: '📶', title: 'WiFi', label: 'Contraseña', msg: '¿Cuál es la contraseña del WiFi?' },
+        { icon: '🅿️', title: 'Aparcamiento', label: 'Ubicación', msg: '¿Dónde puedo aparcar?' },
+        { icon: '🔑', title: 'Habitación', label: 'PIN & acceso', msg: '¿Cómo entro a mi habitación?' },
+        { icon: '🕐', title: 'Check-out', label: 'Hora', msg: '¿A qué hora es el check-out?' }
+      ]
+    },
+    hr: {
+      tagline: 'Digitalni Concierge',
+      welcomeTitle: 'Dobrodošli u Hotel Check Rhein',
+      welcomeText: 'Kako vam mogu pomoći? Pitajte me bilo što o vašem boravku — WiFi, parking, check-out ili nešto drugo.',
+      emergencyText: 'Hitan slučaj? Nazovite managera: ',
+      placeholder: 'Napišite poruku...',
+      thinking: 'Piše',
+      backBtn: '↩ Natrag na početak',
+      networkError: 'Nažalost došlo je do greške. Molimo pokušajte ponovno ili nazovite managera.',
+      actions: [
+        { icon: '📶', title: 'WiFi', label: 'Lozinka', msg: 'Koja je WiFi lozinka?' },
+        { icon: '🅿️', title: 'Parking', label: 'Lokacija & pristup', msg: 'Gdje mogu parkirati?' },
+        { icon: '🔑', title: 'Soba', label: 'PIN & pristup', msg: 'Kako da uđem u sobu?' },
+        { icon: '🕐', title: 'Check-out', label: 'Vrijeme & postupak', msg: 'Do koliko sati je check-out?' }
+      ]
+    },
+    uk: {
+      tagline: 'Цифровий Консьєрж',
+      welcomeTitle: 'Ласкаво просимо до Hotel Check Rhein',
+      welcomeText: 'Чим я можу допомогти? Запитайте мене про ваше перебування — WiFi, парковка, виїзд або щось інше.',
+      emergencyText: 'Екстрений випадок? Зателефонуйте менеджеру: ',
+      placeholder: 'Напишіть повідомлення...',
+      thinking: 'Пише',
+      backBtn: '↩ Назад до початку',
+      networkError: 'Вибачте, сталася помилка. Спробуйте ще раз або зателефонуйте менеджеру.',
+      actions: [
+        { icon: '📶', title: 'WiFi', label: 'Пароль', msg: 'Який пароль WiFi?' },
+        { icon: '🅿️', title: 'Парковка', label: 'Розташування', msg: 'Де я можу припаркуватися?' },
+        { icon: '🔑', title: 'Кімната', label: 'PIN та доступ', msg: 'Як потрапити до кімнати?' },
+        { icon: '🕐', title: 'Виїзд', label: 'Час та порядок', msg: 'О котрій годині виїзд?' }
+      ]
+    }
+  };
 
-// ── STATE ──
-let selectedLang = 'auto';
-let sessionId = 'session_' + Math.random().toString(36).substr(2, 9) + '_' + Date.now();
-let isTyping = false;
-let conversationHistory = [];
+  let currentLang = 'de';
+  let sessionId = 'session_' + Math.random().toString(36).substr(2, 9) + '_' + Date.now();
+  let hasMessages = false;
 
-const langGreetings = {
-  auto: 'Ask me anything about your stay — WiFi, parking, check-out, or anything else.',
-  en: 'Ask me anything about your stay — WiFi, parking, check-out, or anything else.',
-  de: 'Stellen Sie mir beliebige Fragen zu Ihrem Aufenthalt.',
-  nl: 'Stel me gerust vragen over uw verblijf.',
-  fr: 'Posez-moi toutes vos questions sur votre séjour.',
-  es: 'Pregúntame lo que quieras sobre tu estancia.',
-  uk: 'Запитайте мене про ваше перебування.',
-  hr: 'Pitajte me što god želite o vašem boravku.'
-};
-
-const langPlaceholders = {
-  auto: 'Type your question...',
-  en: 'Type your question...',
-  de: 'Ihre Frage...',
-  nl: 'Stel uw vraag...',
-  fr: 'Votre question...',
-  es: 'Tu pregunta...',
-  uk: 'Ваше запитання...',
-  hr: 'Vaše pitanje...'
-};
-
-const quickQuestions = {
-  wifi: {
-    auto: 'What is the WiFi password?',
-    de: 'Was ist das WLAN-Passwort?',
-    nl: 'Wat is het WiFi-wachtwoord?',
-    fr: 'Quel est le mot de passe WiFi?',
-    es: '¿Cuál es la contraseña WiFi?',
-    uk: 'Який пароль від WiFi?',
-    hr: 'Koja je lozinka za WiFi?'
-  },
-  parking: {
-    auto: 'Where is the parking and how do I access it?',
-    de: 'Wo ist der Parkplatz und wie komme ich rein?',
-    nl: 'Waar is de parkeerplaats en hoe krijg ik toegang?',
-    fr: 'Où est le parking et comment y accéder?',
-    es: '¿Dónde está el aparcamiento y cómo accedo?',
-    uk: 'Де знаходиться парковка і як до неї дістатися?',
-    hr: 'Gdje je parking i kako da uđem?'
-  },
-  checkin: {
-    auto: 'How do I enter my room with the PIN I received?',
-    de: 'Wie betrete ich mein Zimmer mit dem PIN?',
-    nl: 'Hoe kom ik mijn kamer binnen met de PIN?',
-    fr: 'Comment entrer dans ma chambre avec le code PIN?',
-    es: '¿Cómo entro en mi habitación con el PIN?',
-    uk: 'Як увійти до кімнати з PIN-кодом?',
-    hr: 'Kako ući u sobu s PIN-om?'
-  },
-  checkout: {
-    auto: 'What time is check-out and what do I need to do?',
-    de: 'Wann ist der Check-out und was muss ich tun?',
-    nl: 'Hoe laat is het uitchecken en wat moet ik doen?',
-    fr: 'Quelle heure est le check-out et que dois-je faire?',
-    es: '¿A qué hora es el check-out y qué debo hacer?',
-    uk: 'О котрій годині виїзд і що потрібно зробити?',
-    hr: 'Kada je check-out i što trebam napraviti?'
+  function t(key) {
+    return I18N[currentLang][key] || I18N.en[key] || '';
   }
-};
 
-// ── LANGUAGE ──
-function setLang(lang) {
-  selectedLang = lang;
-  document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
-  event.target.classList.add('active');
-  document.getElementById('welcome-sub').textContent = langGreetings[lang] || langGreetings.auto;
-  document.getElementById('input').placeholder = langPlaceholders[lang] || langPlaceholders.auto;
-}
-
-// ── QUICK ASK ──
-function quickAsk(type) {
-  const lang = selectedLang === 'auto' ? 'auto' : selectedLang;
-  const q = (quickQuestions[type] || {})[lang] || quickQuestions[type].auto;
-  sendMessageText(q);
-}
-
-// ── INPUT AUTO-RESIZE ──
-const inputEl = document.getElementById('input');
-const sendBtn = document.getElementById('send-btn');
-
-inputEl.addEventListener('input', function() {
-  this.style.height = 'auto';
-  this.style.height = Math.min(this.scrollHeight, 100) + 'px';
-  sendBtn.disabled = this.value.trim().length === 0;
-});
-
-inputEl.addEventListener('keydown', function(e) {
-  if (e.key === 'Enter' && !e.shiftKey) {
-    e.preventDefault();
-    if (!sendBtn.disabled) sendMessage();
+  function applyTranslations() {
+    document.documentElement.lang = currentLang;
+    document.getElementById('tagline').textContent = t('tagline');
+    document.getElementById('emergency-text').textContent = t('emergencyText');
+    document.getElementById('input').placeholder = t('placeholder');
+    if (!hasMessages) showWelcome();
   }
-});
 
-// ── SEND ──
-function sendMessage() {
-  const text = inputEl.value.trim();
-  if (!text || isTyping) return;
-  inputEl.value = '';
-  inputEl.style.height = 'auto';
-  sendBtn.disabled = true;
-  sendMessageText(text);
-}
+  function showWelcome() {
+    const data = I18N[currentLang];
+    const messages = document.getElementById('messages');
+    messages.innerHTML = `
+      <div class="welcome">
+        <div class="welcome-icon">🏨</div>
+        <h2>${data.welcomeTitle}</h2>
+        <p>${data.welcomeText}</p>
+        <div class="quick-actions">
+          ${data.actions.map(a => `
+            <button class="quick-btn" onclick="quickSend('${a.msg.replace(/'/g, "\\'")}')">
+              <span class="icon">${a.icon}</span>
+              <span class="title">${a.title}</span>
+              <span class="label">${a.label}</span>
+            </button>
+          `).join('')}
+        </div>
+      </div>
+    `;
+  }
 
-async function sendMessageText(text) {
-  if (isTyping) return;
+  function changeLanguage() {
+    currentLang = document.getElementById('language').value;
+    applyTranslations();
+  }
 
-  // Remove welcome screen on first message
-  const welcome = document.querySelector('.welcome');
-  if (welcome) welcome.remove();
+  function resetChat() {
+    sessionId = 'session_' + Math.random().toString(36).substr(2, 9) + '_' + Date.now();
+    hasMessages = false;
+    setEmergencyUrgent(false);
+    showWelcome();
+    document.getElementById('input').focus();
+  }
 
-  appendMessage('user', text);
-  conversationHistory.push({ role: 'user', content: text });
+  function addMsg(text, cls) {
+    if (!hasMessages) {
+      document.getElementById('messages').innerHTML = '';
+      hasMessages = true;
+    }
+    const messages = document.getElementById('messages');
+    const div = document.createElement('div');
+    div.className = 'msg ' + cls;
+    div.textContent = text;
+    messages.appendChild(div);
 
-  showTyping();
-  isTyping = true;
+    // Add back button only once, after first message
+    if (!document.getElementById('back-row')) {
+      const backRow = document.createElement('div');
+      backRow.id = 'back-row';
+      backRow.className = 'back-row';
+      backRow.innerHTML = `<button class="back-btn" onclick="resetChat()">${t('backBtn')}</button>`;
+      messages.appendChild(backRow);
+    }
+    div.scrollIntoView({ behavior: 'smooth', block: 'end' });
+    return div;
+  }
 
-  try {
-    const response = await fetch(N8N_WEBHOOK_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
+  function setEmergencyUrgent(urgent) {
+    const el = document.getElementById('emergency');
+    if (urgent) el.classList.add('urgent');
+    else el.classList.remove('urgent');
+  }
+
+  function quickSend(text) {
+    document.getElementById('input').value = text;
+    send();
+  }
+
+  async function send() {
+    const input = document.getElementById('input');
+    const text = input.value.trim();
+    if (!text) return;
+
+    addMsg(text, 'user');
+    input.value = '';
+    document.getElementById('sendBtn').disabled = true;
+
+    const typingMsg = addMsg(t('thinking'), 'bot typing');
+
+    try {
+      const payload = {
         message: text,
         sessionId: sessionId,
-        language: selectedLang,
-        history: conversationHistory.slice(-10) // last 10 messages for context
-      })
-    });
+        language: currentLang
+      };
 
-    if (!response.ok) throw new Error('Network error');
+      const res = await fetch(WEBHOOK, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
 
-    const data = await response.json();
-    hideTyping();
+      const data = await res.json();
+      typingMsg.remove();
 
-    const reply = data.reply || data.message || data.output || 'Sorry, I could not process your request.';
-    appendMessage('bot', reply);
-    conversationHistory.push({ role: 'assistant', content: reply });
+      if (!res.ok) {
+        addMsg(t('networkError'), 'bot');
+        setEmergencyUrgent(true);
+      } else {
+        addMsg(data.reply || '...', 'bot');
+        if (data.escalate === true || data.escalate === 'true') {
+          setEmergencyUrgent(true);
+        }
+      }
 
-    // Check if reply contains escalation signal
-    if (data.escalate || reply.toLowerCase().includes('manager') || reply.toLowerCase().includes('emergency')) {
-      appendEmergency();
+    } catch (err) {
+      typingMsg.remove();
+      addMsg(t('networkError'), 'bot');
+      setEmergencyUrgent(true);
+    } finally {
+      document.getElementById('sendBtn').disabled = false;
+      input.focus();
     }
-
-  } catch (err) {
-    hideTyping();
-    appendError();
   }
 
-  isTyping = false;
-}
-
-// ── DOM HELPERS ──
-function appendMessage(role, text) {
-  const msgs = document.getElementById('messages');
-  const div = document.createElement('div');
-  div.className = `msg ${role}`;
-
-  const bubble = document.createElement('div');
-  bubble.className = 'bubble';
-  bubble.textContent = text;
-
-  const time = document.createElement('div');
-  time.className = 'msg-time';
-  time.textContent = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-
-  div.appendChild(bubble);
-  div.appendChild(time);
-  msgs.appendChild(div);
-  msgs.scrollTop = msgs.scrollHeight;
-}
-
-function appendEmergency() {
-  const msgs = document.getElementById('messages');
-  const banner = document.createElement('div');
-  banner.className = 'emergency-banner';
-  banner.innerHTML = `
-    <div class="em-icon">📞</div>
-    <div class="em-text">
-      For urgent matters, please contact our manager directly:
-      <a href="tel:${MANAGER_PHONE}" class="em-number">${MANAGER_PHONE}</a>
-    </div>
-  `;
-  msgs.appendChild(banner);
-  msgs.scrollTop = msgs.scrollHeight;
-}
-
-function appendError() {
-  const msgs = document.getElementById('messages');
-  const err = document.createElement('div');
-  err.className = 'error-msg';
-  err.textContent = '⚠️ Connection error. Please try again or contact the manager: ' + MANAGER_PHONE;
-  msgs.appendChild(err);
-  msgs.scrollTop = msgs.scrollHeight;
-}
-
-let typingEl = null;
-function showTyping() {
-  const msgs = document.getElementById('messages');
-  typingEl = document.createElement('div');
-  typingEl.className = 'msg bot';
-  typingEl.id = 'typing-indicator';
-  typingEl.innerHTML = `<div class="typing-bubble"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div>`;
-  msgs.appendChild(typingEl);
-  msgs.scrollTop = msgs.scrollHeight;
-}
-
-function resetChat() {
-  document.getElementById('messages').innerHTML = `
-    <div class="welcome">
-      <div class="welcome-icon">🏨</div>
-      <h2>Welcome to Hotel Check Rhein</h2>
-      <p id="welcome-sub">Ask me anything about your stay — WiFi, parking, check-out, or anything else.</p>
-      <div class="quick-actions">
-        <button class="quick-btn" onclick="quickAsk('wifi')"><span class="icon">📶</span><span>WiFi</span><span class="label">Password & setup</span></button>
-        <button class="quick-btn" onclick="quickAsk('parking')"><span class="icon">🅿️</span><span>Parking</span><span class="label">Location & access</span></button>
-        <button class="quick-btn" onclick="quickAsk('checkin')"><span class="icon">🔑</span><span>Room entry</span><span class="label">PIN & smart lock</span></button>
-        <button class="quick-btn" onclick="quickAsk('checkout')"><span class="icon">🕐</span><span>Check-out</span><span class="label">Time & procedure</span></button>
-      </div>
-    </div>`;
-  conversationHistory = [];
-  sessionId = 'session_' + Math.random().toString(36).substr(2, 9) + '_' + Date.now();
-}function hideTyping() {
-  if (typingEl) { typingEl.remove(); typingEl = null; }
-}
+  // Initialize on load
+  document.getElementById('language').value = 'de';
+  applyTranslations();
+  showWelcome();
+  document.getElementById('input').focus();
 </script>
 </body>
 </html>
