@@ -357,7 +357,6 @@
 <script>
   const WEBHOOK = 'https://welmora.app.n8n.cloud/webhook/hotel-chat';
  
-  // ============ I18N DICTIONARY ============
   const I18N = {
     de: {
       tagline: 'Digitaler Concierge',
@@ -452,19 +451,19 @@
     hr: {
       tagline: 'Digitalni Concierge',
       welcomeTitle: 'Dobrodošli u Hotel Check Rhein',
-      welcomeText: 'Kako vam mogu pomoći? Pitajte me o rezervaciji, check-inu, WiFi-u, parkingu, produženju boravka ili bilo čemu drugom.',
-      emergencyText: 'Hitan slučaj? Nazovite managera: ',
+      welcomeText: 'Kako vam mogu pomoći? Pitajte me o rezervaciji, check-inu, WiFi-u, parkiranju, produljenju boravka ili bilo čemu drugome.',
+      emergencyText: 'Hitni slučaj? Nazovite managera: ',
       placeholder: 'Napišite poruku...',
       thinking: 'Piše',
       backBtn: '↩ Natrag na početak',
-      networkError: 'Nažalost došlo je do greške. Molimo pokušajte ponovno ili nazovite managera.',
+      networkError: 'Nažalost, došlo je do pogreške. Molimo pokušajte ponovno ili nazovite managera.',
       actions: [
         { icon: '📶', title: 'WiFi', label: 'Lozinka', msg: 'Koja je WiFi lozinka?' },
-        { icon: '🅿️', title: 'Parking', label: 'Lokacija & pristup', msg: 'Gdje mogu parkirati?' },
-        { icon: '🔑', title: 'Soba', label: 'PIN & pristup', msg: 'Kako da uđem u sobu?' },
-        { icon: '🕐', title: 'Check-out', label: 'Vrijeme & postupak', msg: 'Do koliko sati je check-out?' },
-        { icon: '📅', title: 'Rezervacija', label: 'Postupak & plaćanje', msg: 'Kako mogu rezervirati sobu?' },
-        { icon: '➕', title: 'Produžiti', label: 'Produžiti boravak', msg: 'Kako mogu produžiti rezervaciju?' }
+        { icon: '🅿️', title: 'Parkiranje', label: 'Lokacija i pristup', msg: 'Gdje mogu parkirati?' },
+        { icon: '🔑', title: 'Soba', label: 'PIN i pristup', msg: 'Kako mogu ući u sobu?' },
+        { icon: '🕐', title: 'Check-out', label: 'Vrijeme i postupak', msg: 'Do koliko sati je check-out?' },
+        { icon: '📅', title: 'Rezervacija', label: 'Postupak i plaćanje', msg: 'Kako mogu rezervirati sobu?' },
+        { icon: '➕', title: 'Produljiti', label: 'Produljiti boravak', msg: 'Kako mogu produljiti rezervaciju?' }
       ]
     },
     uk: {
@@ -491,9 +490,7 @@
   let sessionId = 'session_' + Math.random().toString(36).substr(2, 9) + '_' + Date.now();
   let hasMessages = false;
  
-  function t(key) {
-    return I18N[currentLang][key] || I18N.en[key] || '';
-  }
+  function t(key) { return I18N[currentLang][key] || I18N.en[key] || ''; }
  
   function applyTranslations() {
     document.documentElement.lang = currentLang;
@@ -505,8 +502,7 @@
  
   function showWelcome() {
     const data = I18N[currentLang];
-    const messages = document.getElementById('messages');
-    messages.innerHTML = `
+    document.getElementById('messages').innerHTML = `
       <div class="welcome">
         <div class="welcome-icon">🏨</div>
         <h2>${data.welcomeTitle}</h2>
@@ -524,9 +520,7 @@
     `;
   }
  
-  const LANG_META = {
-    de: 'DE', en: 'EN', fr: 'FR', nl: 'NL', es: 'ES', hr: 'HR', uk: 'UK'
-  };
+  const LANG_META = { de:'DE', en:'EN', fr:'FR', nl:'NL', es:'ES', hr:'HR', uk:'UK' };
 
   function toggleLang() {
     document.getElementById('langBtn').classList.toggle('open');
@@ -559,17 +553,12 @@
   }
  
   function addMsg(text, cls) {
-    if (!hasMessages) {
-      document.getElementById('messages').innerHTML = '';
-      hasMessages = true;
-    }
+    if (!hasMessages) { document.getElementById('messages').innerHTML = ''; hasMessages = true; }
     const messages = document.getElementById('messages');
     const div = document.createElement('div');
     div.className = 'msg ' + cls;
     div.textContent = text;
     messages.appendChild(div);
- 
-    // Add back button only once, after first message
     if (!document.getElementById('back-row')) {
       const backRow = document.createElement('div');
       backRow.id = 'back-row';
@@ -587,48 +576,29 @@
     else el.classList.remove('urgent');
   }
  
-  function quickSend(text) {
-    document.getElementById('input').value = text;
-    send();
-  }
+  function quickSend(text) { document.getElementById('input').value = text; send(); }
  
   async function send() {
     const input = document.getElementById('input');
     const text = input.value.trim();
     if (!text) return;
- 
     addMsg(text, 'user');
     input.value = '';
     document.getElementById('sendBtn').disabled = true;
- 
     const typingMsg = addMsg(t('thinking'), 'bot typing');
- 
     try {
-      const payload = {
-        message: text,
-        sessionId: sessionId,
-        language: currentLang
-      };
- 
       const res = await fetch(WEBHOOK, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
+        body: JSON.stringify({ message: text, sessionId, language: currentLang })
       });
- 
       const data = await res.json();
       typingMsg.remove();
- 
-      if (!res.ok) {
-        addMsg(t('networkError'), 'bot');
-        setEmergencyUrgent(true);
-      } else {
+      if (!res.ok) { addMsg(t('networkError'), 'bot'); setEmergencyUrgent(true); }
+      else {
         addMsg(data.reply || '...', 'bot');
-        if (data.escalate === true || data.escalate === 'true') {
-          setEmergencyUrgent(true);
-        }
+        if (data.escalate === true || data.escalate === 'true') setEmergencyUrgent(true);
       }
- 
     } catch (err) {
       typingMsg.remove();
       addMsg(t('networkError'), 'bot');
@@ -639,11 +609,9 @@
     }
   }
  
-  // Initialize on load
   applyTranslations();
   showWelcome();
   document.getElementById('input').focus();
 </script>
 </body>
 </html>
- 
