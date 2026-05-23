@@ -20,7 +20,7 @@
     display: flex;
     flex-direction: column;
   }
-
+ 
   /* HEADER */
   .header {
     background: linear-gradient(180deg, #1a1c20 0%, #14161a 100%);
@@ -59,7 +59,7 @@
     outline: none;
   }
   .lang-select:focus { border-color: #C9A96E; }
-
+ 
   /* EMERGENCY BANNER */
   .emergency {
     background: rgba(201, 169, 110, 0.06);
@@ -83,7 +83,7 @@
   }
   .emergency a { color: inherit; text-decoration: none; font-weight: 600; }
   .emergency a:hover { text-decoration: underline; }
-
+ 
   /* MESSAGES */
   .messages {
     flex: 1;
@@ -94,7 +94,7 @@
     gap: 12px;
     scroll-behavior: smooth;
   }
-
+ 
   /* WELCOME SCREEN */
   .welcome {
     margin: auto 0;
@@ -157,7 +157,7 @@
     color: #888;
     font-size: 10.5px;
   }
-
+ 
   /* CHAT MESSAGES */
   .msg {
     padding: 11px 15px;
@@ -205,7 +205,7 @@
     0%, 60%, 100% { opacity: 0.3; }
     30% { opacity: 1; }
   }
-
+ 
   /* BACK BUTTON */
   .back-row {
     display: flex;
@@ -227,7 +227,7 @@
     background: rgba(201, 169, 110, 0.08);
     border-color: rgba(201, 169, 110, 0.5);
   }
-
+ 
   /* INPUT AREA */
   .input-area {
     background: #14161a;
@@ -268,7 +268,7 @@
   .input-area button:hover:not(:disabled) { transform: scale(1.05); }
   .input-area button:disabled { opacity: 0.4; cursor: not-allowed; }
   .input-area button svg { width: 20px; height: 20px; }
-
+ 
   /* FOOTER */
   .footer-note {
     text-align: center;
@@ -297,14 +297,14 @@
       <option value="uk">🇺🇦 UK</option>
     </select>
   </div>
-
+ 
   <div class="emergency" id="emergency">
     <span id="emergency-text"></span>
     <a href="tel:+4983317851790">+49 8331 7851790</a>
   </div>
-
+ 
   <div class="messages" id="messages"></div>
-
+ 
   <div class="input-area">
     <input id="input" type="text" autocomplete="off" onkeypress="if(event.key==='Enter')send()">
     <button onclick="send()" id="sendBtn" aria-label="Send">
@@ -314,18 +314,18 @@
       </svg>
     </button>
   </div>
-
+ 
   <div class="footer-note">Powered by AI · Hotel Check Rhein © 2026</div>
-
+ 
 <script>
-  const WEBHOOK = 'https://welmora.app.n8n.cloud/webhook/hotel-chat-v2';
-
+  const WEBHOOK = 'https://welmora.app.n8n.cloud/webhook/hotel-chat';
+ 
   // ============ I18N DICTIONARY ============
   const I18N = {
     de: {
       tagline: 'Digitaler Concierge',
       welcomeTitle: 'Willkommen im Hotel Check Rhein',
-      welcomeText: 'Wie kann ich Ihnen helfen? Stellen Sie mir eine Frage zu Ihrem Aufenthalt — WLAN, Parken, Check-out oder etwas anderes.',
+      welcomeText: 'Wie kann ich Ihnen helfen? Fragen Sie mich zu Buchung, Check-in, WLAN, Parken, Verlängerung oder allem rund um Ihren Aufenthalt.',
       emergencyText: 'Notfall? Manager anrufen: ',
       placeholder: 'Nachricht schreiben...',
       thinking: 'Schreibt',
@@ -335,13 +335,15 @@
         { icon: '📶', title: 'WLAN', label: 'Passwort & Setup', msg: 'Wie ist das WLAN-Passwort?' },
         { icon: '🅿️', title: 'Parken', label: 'Standort & Zugang', msg: 'Wo kann ich parken?' },
         { icon: '🔑', title: 'Zimmer', label: 'PIN & Zugang', msg: 'Wie komme ich in mein Zimmer?' },
-        { icon: '🕐', title: 'Check-out', label: 'Zeit & Ablauf', msg: 'Bis wann ist der Check-out?' }
+        { icon: '🕐', title: 'Check-out', label: 'Zeit & Ablauf', msg: 'Bis wann ist der Check-out?' },
+        { icon: '📅', title: 'Buchung', label: 'Ablauf & Bezahlung', msg: 'Wie kann ich ein Zimmer buchen?' },
+        { icon: '➕', title: 'Verlängern', label: 'Aufenthalt verlängern', msg: 'Wie kann ich meine Buchung verlängern?' }
       ]
     },
     en: {
       tagline: 'Digital Concierge',
       welcomeTitle: 'Welcome to Hotel Check Rhein',
-      welcomeText: 'How can I help you? Ask me anything about your stay — WiFi, parking, check-out, or anything else.',
+      welcomeText: 'How can I help you? Ask me about booking, check-in, WiFi, parking, extending your stay, or anything about your stay.',
       emergencyText: 'Emergency? Call manager: ',
       placeholder: 'Write a message...',
       thinking: 'Typing',
@@ -351,13 +353,15 @@
         { icon: '📶', title: 'WiFi', label: 'Password & setup', msg: 'What is the WiFi password?' },
         { icon: '🅿️', title: 'Parking', label: 'Location & access', msg: 'Where can I park?' },
         { icon: '🔑', title: 'Room entry', label: 'PIN & access', msg: 'How do I get into my room?' },
-        { icon: '🕐', title: 'Check-out', label: 'Time & procedure', msg: 'What time is check-out?' }
+        { icon: '🕐', title: 'Check-out', label: 'Time & procedure', msg: 'What time is check-out?' },
+        { icon: '📅', title: 'Booking', label: 'Process & payment', msg: 'How can I book a room?' },
+        { icon: '➕', title: 'Extend stay', label: 'Stay longer', msg: 'How can I extend my booking?' }
       ]
     },
     fr: {
       tagline: 'Concierge Numérique',
       welcomeTitle: 'Bienvenue à l\u2019Hôtel Check Rhein',
-      welcomeText: 'Comment puis-je vous aider ? Posez-moi une question sur votre séjour — WiFi, parking, départ ou autre.',
+      welcomeText: 'Comment puis-je vous aider ? Posez-moi une question sur la réservation, le check-in, le WiFi, le parking, la prolongation ou tout autre sujet.',
       emergencyText: 'Urgence ? Appelez le manager : ',
       placeholder: 'Écrivez un message...',
       thinking: 'Écrit',
@@ -367,13 +371,15 @@
         { icon: '📶', title: 'WiFi', label: 'Mot de passe', msg: 'Quel est le mot de passe WiFi ?' },
         { icon: '🅿️', title: 'Parking', label: 'Emplacement', msg: 'Où puis-je me garer ?' },
         { icon: '🔑', title: 'Chambre', label: 'PIN & accès', msg: 'Comment entrer dans ma chambre ?' },
-        { icon: '🕐', title: 'Check-out', label: 'Heure & procédure', msg: 'À quelle heure est le check-out ?' }
+        { icon: '🕐', title: 'Check-out', label: 'Heure & procédure', msg: 'À quelle heure est le check-out ?' },
+        { icon: '📅', title: 'Réservation', label: 'Processus & paiement', msg: 'Comment réserver une chambre ?' },
+        { icon: '➕', title: 'Prolonger', label: 'Prolonger le séjour', msg: 'Comment puis-je prolonger ma réservation ?' }
       ]
     },
     nl: {
       tagline: 'Digitale Concierge',
       welcomeTitle: 'Welkom in Hotel Check Rhein',
-      welcomeText: 'Hoe kan ik u helpen? Stel een vraag over uw verblijf — WiFi, parkeren, check-out of iets anders.',
+      welcomeText: 'Hoe kan ik u helpen? Stel een vraag over boeking, check-in, WiFi, parkeren, verlengen of alles rond uw verblijf.',
       emergencyText: 'Noodgeval? Bel de manager: ',
       placeholder: 'Schrijf een bericht...',
       thinking: 'Schrijft',
@@ -383,13 +389,15 @@
         { icon: '📶', title: 'WiFi', label: 'Wachtwoord', msg: 'Wat is het WiFi-wachtwoord?' },
         { icon: '🅿️', title: 'Parkeren', label: 'Locatie & toegang', msg: 'Waar kan ik parkeren?' },
         { icon: '🔑', title: 'Kamer', label: 'PIN & toegang', msg: 'Hoe kom ik in mijn kamer?' },
-        { icon: '🕐', title: 'Check-out', label: 'Tijd & procedure', msg: 'Hoe laat is de check-out?' }
+        { icon: '🕐', title: 'Check-out', label: 'Tijd & procedure', msg: 'Hoe laat is de check-out?' },
+        { icon: '📅', title: 'Boeking', label: 'Proces & betaling', msg: 'Hoe kan ik een kamer boeken?' },
+        { icon: '➕', title: 'Verlengen', label: 'Verblijf verlengen', msg: 'Hoe kan ik mijn boeking verlengen?' }
       ]
     },
     es: {
       tagline: 'Conserje Digital',
       welcomeTitle: 'Bienvenido a Hotel Check Rhein',
-      welcomeText: '¿En qué puedo ayudarle? Hágame una pregunta sobre su estancia — WiFi, aparcamiento, salida o cualquier otra cosa.',
+      welcomeText: '¿En qué puedo ayudarle? Pregúnteme sobre reservas, check-in, WiFi, aparcamiento, prolongar la estancia o cualquier otra cosa.',
       emergencyText: '¿Emergencia? Llame al manager: ',
       placeholder: 'Escribe un mensaje...',
       thinking: 'Escribiendo',
@@ -399,13 +407,15 @@
         { icon: '📶', title: 'WiFi', label: 'Contraseña', msg: '¿Cuál es la contraseña del WiFi?' },
         { icon: '🅿️', title: 'Aparcamiento', label: 'Ubicación', msg: '¿Dónde puedo aparcar?' },
         { icon: '🔑', title: 'Habitación', label: 'PIN & acceso', msg: '¿Cómo entro a mi habitación?' },
-        { icon: '🕐', title: 'Check-out', label: 'Hora', msg: '¿A qué hora es el check-out?' }
+        { icon: '🕐', title: 'Check-out', label: 'Hora', msg: '¿A qué hora es el check-out?' },
+        { icon: '📅', title: 'Reserva', label: 'Proceso & pago', msg: '¿Cómo puedo reservar una habitación?' },
+        { icon: '➕', title: 'Prolongar', label: 'Alargar estancia', msg: '¿Cómo puedo prolongar mi reserva?' }
       ]
     },
     hr: {
       tagline: 'Digitalni Concierge',
       welcomeTitle: 'Dobrodošli u Hotel Check Rhein',
-      welcomeText: 'Kako vam mogu pomoći? Pitajte me bilo što o vašem boravku — WiFi, parking, check-out ili nešto drugo.',
+      welcomeText: 'Kako vam mogu pomoći? Pitajte me o rezervaciji, check-inu, WiFi-u, parkingu, produženju boravka ili bilo čemu drugom.',
       emergencyText: 'Hitan slučaj? Nazovite managera: ',
       placeholder: 'Napišite poruku...',
       thinking: 'Piše',
@@ -415,13 +425,15 @@
         { icon: '📶', title: 'WiFi', label: 'Lozinka', msg: 'Koja je WiFi lozinka?' },
         { icon: '🅿️', title: 'Parking', label: 'Lokacija & pristup', msg: 'Gdje mogu parkirati?' },
         { icon: '🔑', title: 'Soba', label: 'PIN & pristup', msg: 'Kako da uđem u sobu?' },
-        { icon: '🕐', title: 'Check-out', label: 'Vrijeme & postupak', msg: 'Do koliko sati je check-out?' }
+        { icon: '🕐', title: 'Check-out', label: 'Vrijeme & postupak', msg: 'Do koliko sati je check-out?' },
+        { icon: '📅', title: 'Rezervacija', label: 'Postupak & plaćanje', msg: 'Kako mogu rezervirati sobu?' },
+        { icon: '➕', title: 'Produžiti', label: 'Produžiti boravak', msg: 'Kako mogu produžiti rezervaciju?' }
       ]
     },
     uk: {
       tagline: 'Цифровий Консьєрж',
       welcomeTitle: 'Ласкаво просимо до Hotel Check Rhein',
-      welcomeText: 'Чим я можу допомогти? Запитайте мене про ваше перебування — WiFi, парковка, виїзд або щось інше.',
+      welcomeText: 'Чим я можу допомогти? Запитайте про бронювання, заїзд, WiFi, парковку, продовження або будь-що інше.',
       emergencyText: 'Екстрений випадок? Зателефонуйте менеджеру: ',
       placeholder: 'Напишіть повідомлення...',
       thinking: 'Пише',
@@ -431,19 +443,21 @@
         { icon: '📶', title: 'WiFi', label: 'Пароль', msg: 'Який пароль WiFi?' },
         { icon: '🅿️', title: 'Парковка', label: 'Розташування', msg: 'Де я можу припаркуватися?' },
         { icon: '🔑', title: 'Кімната', label: 'PIN та доступ', msg: 'Як потрапити до кімнати?' },
-        { icon: '🕐', title: 'Виїзд', label: 'Час та порядок', msg: 'О котрій годині виїзд?' }
+        { icon: '🕐', title: 'Виїзд', label: 'Час та порядок', msg: 'О котрій годині виїзд?' },
+        { icon: '📅', title: 'Бронювання', label: 'Процес та оплата', msg: 'Як забронювати номер?' },
+        { icon: '➕', title: 'Продовжити', label: 'Подовжити перебування', msg: 'Як можна продовжити бронювання?' }
       ]
     }
   };
-
+ 
   let currentLang = 'de';
   let sessionId = 'session_' + Math.random().toString(36).substr(2, 9) + '_' + Date.now();
   let hasMessages = false;
-
+ 
   function t(key) {
     return I18N[currentLang][key] || I18N.en[key] || '';
   }
-
+ 
   function applyTranslations() {
     document.documentElement.lang = currentLang;
     document.getElementById('tagline').textContent = t('tagline');
@@ -451,7 +465,7 @@
     document.getElementById('input').placeholder = t('placeholder');
     if (!hasMessages) showWelcome();
   }
-
+ 
   function showWelcome() {
     const data = I18N[currentLang];
     const messages = document.getElementById('messages');
@@ -472,12 +486,12 @@
       </div>
     `;
   }
-
+ 
   function changeLanguage() {
     currentLang = document.getElementById('language').value;
     applyTranslations();
   }
-
+ 
   function resetChat() {
     sessionId = 'session_' + Math.random().toString(36).substr(2, 9) + '_' + Date.now();
     hasMessages = false;
@@ -485,7 +499,7 @@
     showWelcome();
     document.getElementById('input').focus();
   }
-
+ 
   function addMsg(text, cls) {
     if (!hasMessages) {
       document.getElementById('messages').innerHTML = '';
@@ -496,7 +510,7 @@
     div.className = 'msg ' + cls;
     div.textContent = text;
     messages.appendChild(div);
-
+ 
     // Add back button only once, after first message
     if (!document.getElementById('back-row')) {
       const backRow = document.createElement('div');
@@ -508,45 +522,45 @@
     div.scrollIntoView({ behavior: 'smooth', block: 'end' });
     return div;
   }
-
+ 
   function setEmergencyUrgent(urgent) {
     const el = document.getElementById('emergency');
     if (urgent) el.classList.add('urgent');
     else el.classList.remove('urgent');
   }
-
+ 
   function quickSend(text) {
     document.getElementById('input').value = text;
     send();
   }
-
+ 
   async function send() {
     const input = document.getElementById('input');
     const text = input.value.trim();
     if (!text) return;
-
+ 
     addMsg(text, 'user');
     input.value = '';
     document.getElementById('sendBtn').disabled = true;
-
+ 
     const typingMsg = addMsg(t('thinking'), 'bot typing');
-
+ 
     try {
       const payload = {
         message: text,
         sessionId: sessionId,
         language: currentLang
       };
-
+ 
       const res = await fetch(WEBHOOK, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
       });
-
+ 
       const data = await res.json();
       typingMsg.remove();
-
+ 
       if (!res.ok) {
         addMsg(t('networkError'), 'bot');
         setEmergencyUrgent(true);
@@ -556,7 +570,7 @@
           setEmergencyUrgent(true);
         }
       }
-
+ 
     } catch (err) {
       typingMsg.remove();
       addMsg(t('networkError'), 'bot');
@@ -566,7 +580,7 @@
       input.focus();
     }
   }
-
+ 
   // Initialize on load
   document.getElementById('language').value = 'de';
   applyTranslations();
@@ -575,3 +589,4 @@
 </script>
 </body>
 </html>
+ 
