@@ -47,7 +47,9 @@
     letter-spacing: 0.5px;
     text-transform: uppercase;
   }
-  .lang-select {
+  /* LANG DROPDOWN */
+  .lang-dropdown { position: relative; }
+  .lang-btn {
     background: rgba(201, 169, 110, 0.08);
     border: 1px solid rgba(201, 169, 110, 0.25);
     color: #e8e6e0;
@@ -56,10 +58,38 @@
     font-size: 12px;
     cursor: pointer;
     font-family: inherit;
+    display: flex;
+    align-items: center;
+    gap: 5px;
     outline: none;
   }
-  .lang-select:focus { border-color: #C9A96E; }
- .lang-select option { background: #1a1c20; color: #e8e6e0; }
+  .lang-btn.open, .lang-btn:focus { border-color: #C9A96E; }
+  .lang-chevron { font-size: 9px; opacity: 0.5; transition: transform 0.2s; }
+  .lang-btn.open .lang-chevron { transform: rotate(180deg); }
+  .lang-panel {
+    display: none;
+    position: absolute;
+    right: 0;
+    top: calc(100% + 6px);
+    background: #1a1c20;
+    border: 1px solid rgba(201, 169, 110, 0.3);
+    border-radius: 8px;
+    overflow: hidden;
+    z-index: 200;
+    min-width: 100px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+  }
+  .lang-panel.open { display: block; }
+  .lang-option {
+    padding: 9px 14px;
+    font-size: 13px;
+    cursor: pointer;
+    color: #e8e6e0;
+    transition: background 0.15s;
+    white-space: nowrap;
+  }
+  .lang-option:hover { background: rgba(201, 169, 110, 0.12); }
+  .lang-option.active { color: #C9A96E; font-weight: 600; }
  
   /* EMERGENCY BANNER */
   .emergency {
@@ -288,15 +318,21 @@
       <span class="hotel-name">Hotel Check Rhein</span>
       <span class="tagline" id="tagline">Digitaler Concierge</span>
     </div>
-    <select class="lang-select" id="language" onchange="changeLanguage()" aria-label="Language">
-      <option value="de">🇩🇪 DE</option>
-      <option value="en">🇬🇧 EN</option>
-      <option value="fr">🇫🇷 FR</option>
-      <option value="nl">🇳🇱 NL</option>
-      <option value="es">🇪🇸 ES</option>
-      <option value="hr">🇭🇷 HR</option>
-      <option value="uk">🇺🇦 UK</option>
-    </select>
+    <div class="lang-dropdown" id="langDropdown">
+      <button class="lang-btn" id="langBtn" onclick="toggleLang()" aria-label="Language">
+        <span id="langCode">DE</span>
+        <span class="lang-chevron">▼</span>
+      </button>
+      <div class="lang-panel" id="langPanel">
+        <div class="lang-option active" data-lang="de" onclick="selectLang('de')">DE — Deutsch</div>
+        <div class="lang-option" data-lang="en" onclick="selectLang('en')">EN — English</div>
+        <div class="lang-option" data-lang="fr" onclick="selectLang('fr')">FR — Français</div>
+        <div class="lang-option" data-lang="nl" onclick="selectLang('nl')">NL — Nederlands</div>
+        <div class="lang-option" data-lang="es" onclick="selectLang('es')">ES — Español</div>
+        <div class="lang-option" data-lang="hr" onclick="selectLang('hr')">HR — Hrvatski</div>
+        <div class="lang-option" data-lang="uk" onclick="selectLang('uk')">UK — Українська</div>
+      </div>
+    </div>
   </div>
  
   <div class="emergency" id="emergency">
@@ -488,10 +524,31 @@
     `;
   }
  
-  function changeLanguage() {
-    currentLang = document.getElementById('language').value;
+  const LANG_META = {
+    de: 'DE', en: 'EN', fr: 'FR', nl: 'NL', es: 'ES', hr: 'HR', uk: 'UK'
+  };
+
+  function toggleLang() {
+    document.getElementById('langBtn').classList.toggle('open');
+    document.getElementById('langPanel').classList.toggle('open');
+  }
+
+  function selectLang(lang) {
+    currentLang = lang;
+    document.getElementById('langCode').textContent = LANG_META[lang];
+    document.querySelectorAll('.lang-option').forEach(el =>
+      el.classList.toggle('active', el.dataset.lang === lang));
+    document.getElementById('langBtn').classList.remove('open');
+    document.getElementById('langPanel').classList.remove('open');
     applyTranslations();
   }
+
+  document.addEventListener('click', e => {
+    if (!document.getElementById('langDropdown').contains(e.target)) {
+      document.getElementById('langBtn').classList.remove('open');
+      document.getElementById('langPanel').classList.remove('open');
+    }
+  });
  
   function resetChat() {
     sessionId = 'session_' + Math.random().toString(36).substr(2, 9) + '_' + Date.now();
@@ -583,7 +640,6 @@
   }
  
   // Initialize on load
-  document.getElementById('language').value = 'de';
   applyTranslations();
   showWelcome();
   document.getElementById('input').focus();
